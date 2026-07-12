@@ -16,7 +16,6 @@ class Settings:
     GROQ_API_KEY: str = os.getenv("GROQ_API_KEY")
     GROQ_BASE_URL: str = "https://api.groq.com/openai/v1"
 
-    # Fallback chain of models, tried in order until one succeeds.
     GORK_MODELS = [
         "openai/gpt-oss-120b",
         "llama-3.3-70b-versatile",
@@ -29,10 +28,23 @@ class Settings:
     # --- Embeddings ---
     EMBEDDING_MODEL_NAME: str = "all-MiniLM-L6-v2"
 
-    # --- Supabase (used by app/supabase_client.py and core/security.py) ---
-    SUPABASE_URL: str = os.getenv("SUPABASE_URL", "")
+    # --- Supabase ---
+    _supabase_url_raw: str = os.getenv("SUPABASE_URL", "")
+    SUPABASE_URL: str = _supabase_url_raw.split("/rest/v1")[0].rstrip("/") if _supabase_url_raw else ""
     SUPABASE_KEY: str = os.getenv("SUPABASE_KEY", "")
     SUPABASE_JWT_SECRET: str = os.getenv("SUPABASE_JWT_SECRET", "")
+    SUPABASE_STORAGE_BUCKET: str = os.getenv("SUPABASE_STORAGE_BUCKET", "pdfs")
+
+    # Public-key endpoint for verifying Supabase's current default ES256
+    # (asymmetric) JWTs. Derived automatically from SUPABASE_URL.
+    SUPABASE_JWKS_URL: str = os.getenv(
+        "SUPABASE_JWKS_URL",
+        f"{SUPABASE_URL}/auth/v1/.well-known/jwks.json" if SUPABASE_URL else "",
+    )
+
+    # --- Upload validation ---
+    MAX_UPLOAD_SIZE_MB: int = int(os.getenv("MAX_UPLOAD_SIZE_MB", "20"))
+    ALLOWED_UPLOAD_MIME_TYPES = ["application/pdf"]
 
     def validate(self):
         if not self.GROQ_API_KEY:

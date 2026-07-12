@@ -1,40 +1,30 @@
 """
-Holds the in-memory index state (chunks, metadata, FAISS index, BM25
-index) and exposes build_indexes() / hybrid_search(), exactly matching
-the original monolith's global-store behavior.
+Holds in-memory index state for ALL currently-indexed documents, keyed
+by document_id, so a user can have several uploaded PDFs and ask
+questions about a specific one via POST /chat/{document_id}.
 """
 
 from typing import List, Dict
-
-import numpy as np
 from fastapi import HTTPException
-
 from app.services.chunker import semantic_chunking
 from app.services.embeddings import encode
 from app.services.faiss_index import build_faiss_index, search_faiss
 from app.services.bm25_index import build_bm25_index, search_bm25
 
-# ==============================
-# GLOBAL STORES
-# ==============================
-
-faiss_index = None
-bm25 = None
-chunk_store: List[str] = []
-metadata_store: List[Dict] = []
+_index_store: Dict[str, Dict] = {}
 
 
-def build_indexes(documents: List[Dict]):
-    global faiss_index, bm25, chunk_store, metadata_store
-
-    chunk_store = []
-    metadata_store = []
+def build_indexes(documents: List[Dict], document_id: str) -> int:
+    chunk_store: List[str] = []
+    metadata_store: List[Dict] = []
 
     for doc in documents:
         chunks = semantic_chunking(doc["text"])
         for chunk in chunks:
+            chunk_id = f"c_{len(chunk_store):04d}"
             chunk_store.append(chunk)
             metadata_store.append({
+                "id": chunk_id,
                 "page": doc["page"],
                 "section": doc["section"]
             })
@@ -46,22 +36,41 @@ def build_indexes(documents: List[Dict]):
     faiss_index = build_faiss_index(embeddings)
     bm25 = build_bm25_index(chunk_store)
 
+    _index_store[document_id] = {
+        "faiss_index": faiss_index,
+        "bm25": bm25,
+        "chunk_store": chunk_store,
+        "metadata_store": metadata_store,
+    }
 
-def hybrid_search(query: str, k: int = 5):
-    if faiss_index is None or bm25 is None:
-        raise HTTPException(status_code=400, detail="No document uploaded yet.")
+    return len(chunk_store)
+
+
+def has_index(document_id: str) -> bool:
+    return document_id in _index_store
+
+
+def drop_index(document_id: str) -> None:
+    _index_store.pop(document_id, None)
+
+
+def hybrid_search(document_id: str, query: str, k: int = 5):
+    entry = _index_store.get(document_id)
+    if entry is None:
+        raise HTTPException(
+            status_code=404,
+            detail="No index found for this document. It may need to be re-uploaded (indexes are in-memory and reset on server restart).",
+        )
 
     query_vec = encode([query])
-    semantic_results = list(search_faiss(faiss_index, query_vec, k))
-    keyword_results = list(search_bm25(bm25, query, k))
-
+    semantic_results = list(search_faiss(entry["faiss_index"], query_vec, k))
+    keyword_results = list(search_bm25(entry["bm25"], query, k))
     combined = list(set(semantic_results) | set(keyword_results))
 
     results = []
     for idx in combined:
         results.append({
-            "text": chunk_store[idx],
-            "metadata": metadata_store[idx]
+            "text": entry["chunk_store"][idx],
+            "metadata": entry["metadata_store"][idx]
         })
-
     return results
