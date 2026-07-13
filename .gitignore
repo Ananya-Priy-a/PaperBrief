@@ -1,0 +1,24 @@
+# Python
+backend/__pycache__/
+backend/**/*.pyc
+backend/.env
+
+# Indexes
+backend/indexes/*
+!backend/indexes/.gitkeep
+
+# Temporary files
+backend/temp_*.pdf
+
+# Virtual environments
+backend/venv/
+backend/.venv/
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+
+# OS / Editor
+.vscode/
+.DS_Store
+Thumbs.db
