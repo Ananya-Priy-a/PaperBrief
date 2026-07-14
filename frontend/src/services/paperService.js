@@ -13,6 +13,7 @@ export const uploadPaper = async (file) => {
     const {
         data: { session },
     } = await supabase.auth.getSession();
+    console.log("Session:", session);
 
     return API.post("/documents", formData, {
         headers: {
@@ -28,6 +29,7 @@ export const getDocuments = async () => {
         data: { session },
     } = await supabase.auth.getSession();
 
+    console.log("Access Token:", session.access_token);
     return API.get("/documents", {
         headers: {
             Authorization: `Bearer ${session.access_token}`,

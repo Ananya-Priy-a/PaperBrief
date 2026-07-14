@@ -14,11 +14,7 @@ import PaperCard from '@/components/papers/PaperCard';
 import { getDocuments } from "@/services/paperService";
 import { getChatSessions } from "@/services/chatService";
 
-/**
- * Dashboard Component for PaperBrief AI
- * Built with React, Tailwind CSS v4, and Lucide Icons.
- * Features a comprehensive overview of research activity and paper management.
- */
+
 
 
 

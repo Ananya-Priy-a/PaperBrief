@@ -7,8 +7,8 @@ const API = axios.create({
 export const askQuestion = async (
     documentId,
     question,
-    level = "medium",
-    mode = "study",
+    level = "undergraduate",
+    mode = "normal",
     sessionId = null
 ) => {
     const {
