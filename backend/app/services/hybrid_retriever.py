@@ -54,7 +54,7 @@ def drop_index(document_id: str) -> None:
     _index_store.pop(document_id, None)
 
 
-def hybrid_search(document_id: str, query: str, k: int = 5):
+def hybrid_search(document_id: str, query: str, k: int = 10):
     entry = _index_store.get(document_id)
     if entry is None:
         raise HTTPException(
