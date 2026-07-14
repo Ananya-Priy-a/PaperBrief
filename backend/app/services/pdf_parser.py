@@ -5,7 +5,7 @@ import fitz  # PyMuPDF
 
 
 def detect_sections(text: str):
-    section_patterns = r"\n([A-Z][A-Z\s]{3,})\n"
+    section_patterns = r"\n(?:\d+\.?\s*)?([A-Z][A-Za-z\s]{2,})\n"
     splits = re.split(section_patterns, text)
 
     sections = []
@@ -15,7 +15,7 @@ def detect_sections(text: str):
         sections.append((title, content))
 
     if not sections:
-        sections.append(("GENERAL", text))
+        sections.append((" ", text))
 
     return sections
 
