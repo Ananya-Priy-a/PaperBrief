@@ -6,6 +6,10 @@ const ChatInput = ({
     onChange,
     onSubmit,
     onFileUpload,
+    mode,
+    setMode,
+    level,
+    setLevel,
 }) => {
     const handleKeyDown = (e) => {
         if (e.key === 'Enter' && !e.shiftKey) {
@@ -16,12 +20,12 @@ const ChatInput = ({
 
     const fileInputRef = useRef(null);
     return (
-        <div className="shrink-0 border-t border-slate-200 bg-white px-6 py-4">
+        <div className="shrink-0 border-t border-slate-200 bg-white px-6 py-1">
             <form
                 onSubmit={onSubmit}
                 className="w-full max-w-4xl mx-auto"
             >
-                <div className="bg-slate-50 border-2 border-transparent focus-within:border-primary/20 focus-within:bg-white focus-within:shadow-xl focus-within:shadow-primary/5 transition-all rounded-3xl p-4">
+                <div className="bg-slate-50 border-2 border-transparent focus-within:border-primary/20 focus-within:bg-white focus-within:shadow-xl focus-within:shadow-primary/5 transition-all rounded-3xl py-1 px-4">
                     <input
                         type="file"
                         accept=".pdf"
@@ -33,16 +37,37 @@ const ChatInput = ({
                             }
                         }}
                     />
+                    <div className="flex gap-3 mb-3">
+                        <select
+                            value={mode}
+                            onChange={(e) => setMode(e.target.value)}
+                            className="rounded-lg border px-3 py-2 text-sm"
+                        >
+                            <option value="normal">Normal</option>
+                            <option value="analysis">Analysis</option>
+                            <option value="equation">Equation</option>
+                        </select>
+
+                        <select
+                            value={level}
+                            onChange={(e) => setLevel(e.target.value)}
+                            className="rounded-lg border px-3 py-2 text-sm"
+                        >
+                            <option value="beginner">Beginner</option>
+                            <option value="undergraduate">Undergraduate</option>
+                            <option value="researcher">Researcher</option>
+                        </select>
+                    </div>
                     <textarea
                         value={value}
                         onChange={onChange}
                         placeholder="Ask about this paper..."
                         rows="1"
-                        className="w-full resize-none bg-transparent px-4 py-2 text-sm text-slate-800 placeholder:text-slate-400 border-none focus:outline-none focus:ring-0 min-h-[44px] max-h-40 overflow-y-auto"
+                        className="w-full resize-none bg-transparent px-4 py-1 text-sm text-slate-800 placeholder:text-slate-400 border-none focus:outline-none focus:ring-0 min-h-[34px] max-h-32 overflow-y-auto"
                         onKeyDown={handleKeyDown}
                     />
 
-                    <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 pt-4">
+                    <div className="mt-2 flex flex-wrap items-center justify-between gap-2 border-t border-slate-100 pt-2">
                         <div className="flex items-center gap-1 flex-wrap">
                             <button
                                 type="button"
@@ -58,7 +83,7 @@ const ChatInput = ({
 
                             <button
                                 type="submit"
-                                className="flex items-center gap-2 px-5 py-2.5 bg-primary text-white font-bold text-xs uppercase tracking-widest rounded-xl hover:bg-primary/90 transition"
+                                className="flex items-center gap-1 px-3 py-1.5 bg-primary text-white font-bold text-xs uppercase tracking-widest rounded-xl hover:bg-primary/90 transition"
                             >
                                 Send
                                 <Send size={16} />

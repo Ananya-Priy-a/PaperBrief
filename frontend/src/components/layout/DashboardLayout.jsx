@@ -11,7 +11,7 @@ export default function DashboardLayout() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
     return (
-        <div className="flex h-screen bg-[#faf8ff] overflow-hidden">
+        <div className="flex h-screen bg-[#faf8ff] overflow-auto md:overflow-hidden">
 
             {/* Mobile Sidebar */}
             <div
@@ -33,7 +33,7 @@ export default function DashboardLayout() {
             </div>
 
             {/* Main */}
-            <div className="flex-1 flex flex-col overflow-hidden">
+            <div className="flex-1 flex flex-col overflow-y-auto">
 
                 {/* Mobile Header */}
                 <div className="md:hidden h-16 bg-white flex items-center px-4 border-b">

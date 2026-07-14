@@ -67,7 +67,13 @@ const Login = () => {
 
         console.log("Logged in!");
 
-        console.log(data.session.access_token);
+        const token = data.session.access_token;
+
+        console.log("Access Token:");
+        console.log(token);
+
+        console.log("JWT Header:");
+        console.log(JSON.parse(atob(token.split(".")[0])));
 
         navigate("/dashboard");
     };

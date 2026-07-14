@@ -6,24 +6,15 @@ import {
 } from "@/services/chatService"; import {
     Sparkles,
     FileText,
-    ChevronRight,
-    Info,
-    Copy
 } from 'lucide-react';
 import ChatMessage from '@/components/chat/ChatMessage';
 import ChatInput from '@/components/chat/ChatInput';
 import { useLocation, useNavigate } from "react-router-dom";
 
-
-/**
- * ChatWorkspace Component for PaperBrief AI
- * Built with React, Tailwind CSS v4, and Lucide Icons.
- * Features a split layout with document context and AI chat interaction.
- */
-
 const ChatWorkspace = () => {
     const location = useLocation();
-
+    const [mode, setMode] = useState("normal");
+    const [level, setLevel] = useState("undergraduate");
     const navigate = useNavigate();
 
     const state = location.state || {};
@@ -237,8 +228,8 @@ const ChatWorkspace = () => {
             const response = await askQuestion(
                 documentId,
                 question,
-                "medium",
-                "study",
+                level,
+                mode,
                 sessionId
             );
 
@@ -333,13 +324,13 @@ const ChatWorkspace = () => {
     };
     console.log("Messages State:", messages);
     return (
-        <div className="flex flex-col lg:flex-row h-full">
-            {/* 2. Main Chat Area */}
-            <main className="flex-1 flex flex-col min-w-0 bg-white relative min-h-0">
-                {/* Chat Feed */}
+        <div className="flex flex-col lg:flex-row h-full overflow-hidden">
+
+            <main className="flex-1 flex flex-col min-w-0 bg-white relative overflow-hidden">
+
                 <div
                     ref={scrollRef}
-                    className="flex-1 min-h-0 overflow-y-auto p-8 bg-slate-50/30"
+                    className="flex-1 overflow-y-auto p-6 bg-slate-50/30"
                 >
                     <div className="w-full max-w-4xl mx-auto">
                         {messages.map((msg) => (
@@ -364,6 +355,10 @@ const ChatWorkspace = () => {
                     onChange={(e) => setInputValue(e.target.value)}
                     onSubmit={handleSendMessage}
                     onFileUpload={handleFileUpload}
+                    mode={mode}
+                    setMode={setMode}
+                    level={level}
+                    setLevel={setLevel}
                 />
             </main>
 
@@ -394,10 +389,6 @@ const ChatWorkspace = () => {
 
                         <div className="grid grid-cols-2 gap-4 pt-4 border-t border-slate-50">
                             <div>
-                                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-1">Pages</span>
-                                <p className="text-xs font-bold text-slate-900">--</p>
-                            </div>
-                            <div>
                                 <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-1">Size</span>
                                 <p className="text-xs font-bold text-slate-900">{fileSize
                                     ? `${(fileSize / (1024 * 1024)).toFixed(2)} MB`
@@ -406,30 +397,6 @@ const ChatWorkspace = () => {
                         </div>
                     </div>
                 </div>
-
-                {/* Model Selection */}
-                <div className="space-y-4 mb-8">
-                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-1">Selected Model</span>
-                    <button className="w-full flex items-center justify-between p-4 bg-gradient-to-r from-primary/5 to-accent/5 border border-primary/20 rounded-2xl group transition-all hover:shadow-lg hover:shadow-primary/5">
-                        <div className="flex items-center gap-2 shrink-0">
-                            <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center text-primary shadow-sm">
-                                <Sparkles size={16} />
-                            </div>
-                            <div className="text-left">
-                                <p className="text-xs font-bold text-slate-900">Groq LLM</p>
-                                <p className="text-[10px] font-medium text-slate-500">Optimized for Research</p>
-                            </div>
-                        </div>
-                        <ChevronRight size={16} className="text-slate-400 group-hover:translate-x-1 transition-transform" />
-                    </button>
-                </div>
-
-
-
-                <button className="mt-auto w-full py-4 border-2 border-slate-200 hover:border-primary hover:text-primary rounded-2xl flex items-center justify-center gap-3 text-sm font-bold text-slate-600 transition-all group">
-                    <Copy size={18} className="group-hover:scale-110 transition-transform" />
-                    Export Findings
-                </button>
             </aside>
         </div>
     );
