@@ -14,8 +14,9 @@ export const askQuestion = async (
     const {
         data: { session },
     } = await supabase.auth.getSession();
-
+    /*
     console.log("JWT:", session.access_token);
+    */
     console.log("Document ID:", documentId);
 
     return API.post(
