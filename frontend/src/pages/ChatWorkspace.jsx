@@ -341,9 +341,12 @@ const ChatWorkspace = () => {
                             />
                         ))}
                         {isTyping && (
-                            <div className="flex items-center gap-2 text-slate-400 text-xs font-medium mb-6 animate-pulse">
-                                <Sparkles size={14} className="text-primary" />
-                                PaperBrief is thinking...
+                            <div className="flex items-center gap-3 text-primary font-medium mb-6">
+
+                                <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+
+                                Preparing AI response...
+
                             </div>
                         )}
                     </div>

@@ -29,14 +29,18 @@ const UploadTip = ({ text }) => (
 
 const UploadPaper = () => {
     const [selectedFile, setSelectedFile] = useState(null);
+    const [isUploading, setIsUploading] = useState(false);
     const navigate = useNavigate();
     const handleUploadToServer = async () => {
         if (!selectedFile) return;
+
+        setIsUploading(true);
 
         try {
             const response = await uploadPaper(selectedFile);
 
             setSelectedFile(null);
+
             navigate("/chat", {
                 state: {
                     documentId: response.data.document_id,
@@ -47,8 +51,9 @@ const UploadPaper = () => {
 
         } catch (error) {
             console.error(error);
-
             alert("Upload failed");
+        } finally {
+            setIsUploading(false);
         }
     };
     const handleUpload = (files) => {
@@ -135,7 +140,27 @@ const UploadPaper = () => {
 
             </div>
 
+            {
+                isUploading && (
+                    <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center">
 
+                        <div className="bg-white rounded-3xl shadow-xl p-8 text-center w-80">
+
+                            <div className="w-12 h-12 mx-auto border-4 border-primary border-t-transparent rounded-full animate-spin mb-4"></div>
+
+                            <h2 className="text-xl font-bold">
+                                Uploading Paper...
+                            </h2>
+
+                            <p className="text-slate-500 mt-2">
+                                Please wait while your document is uploaded.
+                            </p>
+
+                        </div>
+
+                    </div>
+                )
+            }
         </div>
     );
 };
