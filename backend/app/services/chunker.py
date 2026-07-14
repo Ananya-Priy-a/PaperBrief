@@ -1,13 +1,13 @@
 import re
 
 
-def semantic_chunking(text: str, max_tokens: int = 300):
+def sentence_chunking(text: str, max_chars: int = 300):
     sentences = re.split(r'(?<=[.!?]) +', text)
     chunks = []
     current_chunk = ""
 
     for sentence in sentences:
-        if len(current_chunk) + len(sentence) < max_tokens:
+        if len(current_chunk) + len(sentence) < max_chars:
             current_chunk += " " + sentence
         else:
             if current_chunk:
