@@ -66,9 +66,9 @@ const Login = () => {
         }
 
         console.log("Logged in!");
-
+        /*
         console.log(data.session.access_token);
-
+        */
         navigate("/dashboard");
     };
 
