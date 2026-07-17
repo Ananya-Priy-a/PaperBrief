@@ -10,8 +10,6 @@ import {
     Plus,
 } from 'lucide-react';
 import Logo from './Logo';
-import UserProfile from './UserProfile';
-
 import { NavLink } from "react-router-dom";
 
 const SidebarItem = ({ icon: Icon, label, to, onNavigate }) => (
