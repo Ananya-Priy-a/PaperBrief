@@ -38,7 +38,13 @@ const ChatWorkspace = () => {
 
     useEffect(() => {
 
-        if (!previousSessionId) return;
+        if (!previousSessionId) {
+
+            setMessages([initialMessage]);
+
+            return;
+
+        }
 
         async function loadPreviousChat() {
             try {
@@ -151,7 +157,7 @@ const ChatWorkspace = () => {
         }),
     };
 
-    const [messages, setMessages] = useState([initialMessage]);
+    const [messages, setMessages] = useState([]);
     const [sessionId, setSessionId] = useState(
         previousSessionId || null);
     const [inputValue, setInputValue] = useState('');

@@ -68,3 +68,15 @@ export const getSessionHistory = async (sessionId) => {
     });
 
 };
+export const deleteDocument = async (documentId) => {
+
+    const {
+        data: { session },
+    } = await supabase.auth.getSession();
+
+    return API.delete(`/documents/${documentId}`, {
+        headers: {
+            Authorization: `Bearer ${session.access_token}`,
+        },
+    });
+};
