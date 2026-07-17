@@ -73,7 +73,6 @@ const Dashboard = () => {
                 label="Total Papers"
                 value={papers.length}
                 trend={`${papers.length} Uploaded`}
-                trendLabel="Growth"
                 colorClass="bg-blue-500"
             />
                 <StatCard

@@ -7,7 +7,6 @@ import ChatWorkspace from "@/pages/ChatWorkspace";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import History from "@/pages/History";
 import MyPapers from "@/pages/MyPapers";
-import Settings from "@/pages/Settings";
 import Signup from "@/pages/Signup";
 export default function AppRoutes() {
     return (
@@ -21,8 +20,6 @@ export default function AppRoutes() {
                     <Route path="/chat" element={<ChatWorkspace />} />
                     <Route path="/history" element={<History />} />
                     <Route path="/my-papers" element={<MyPapers />} />
-                    <Route path="/settings" element={<Settings />} />
-
                 </Route>
             </Routes>
         </BrowserRouter>

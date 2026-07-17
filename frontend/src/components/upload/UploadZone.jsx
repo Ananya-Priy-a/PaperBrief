@@ -49,7 +49,7 @@ const UploadZone = ({ onUpload }) => {
             </div>
             <h3 className="text-2xl font-bold text-slate-900 mb-2">Drag your PDF here</h3>
             <p className="text-slate-400 text-sm font-medium mb-8 text-center">
-                Support for individual papers or bulk ZIP archives (Max 50MB per file)
+                Supports individual pdf files (Max 20MB)
             </p>
             <button
                 type="button"
