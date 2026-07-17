@@ -1,6 +1,9 @@
 import React from 'react';
-import { FileText, CheckCircle2, MoreVertical } from 'lucide-react';
-
+import {
+    FileText,
+    CheckCircle2,
+    Trash2
+} from "lucide-react";
 const PaperCard = ({
     variant = "dashboard",
     id,
@@ -75,9 +78,17 @@ const PaperCard = ({
 
                     <button
                         onClick={onContinue}
-                        className="flex-[1.5] py-2.5 bg-primary hover:bg-primary/90 text-white rounded-xl text-xs font-bold transition-all shadow-lg shadow-primary/10 active:scale-95"
+                        className="flex-1 py-2.5 bg-primary hover:bg-primary/90 text-white rounded-xl text-xs font-bold transition-all shadow-lg shadow-primary/10 active:scale-95"
                     >
                         Continue Chat
+                    </button>
+
+                    <button
+                        onClick={onDelete}
+                        className="p-2.5 rounded-xl border border-red-200 text-red-500 hover:bg-red-50 hover:text-red-700 transition-all"
+                        title="Delete Paper"
+                    >
+                        <Trash2 size={18} />
                     </button>
 
                 </div>
